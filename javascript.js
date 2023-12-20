@@ -301,6 +301,7 @@ function attackMonster(monsterHP,attPower){
 		drawDeck.unshift(monster[0]);
 		playedDeck = [];
 		monster[1].Health = monsterHP-attPower;
+		console.clear();
 		console.log(`${monster[0].Value} of ${monster[0].Suit} is perfectly defected`)
 		//getMonster();
 		
@@ -309,6 +310,7 @@ function attackMonster(monsterHP,attPower){
 		discardDeck = discardDeck.concat(playedDeck,monster[0]);
 		playedDeck = [];
 		monster[1].Health = monsterHP-attPower;
+		console.clear();
 		console.log(`${monster[0].Value} of ${monster[0].Suit} is defected`)
 		//getMonster();
 	}else {
