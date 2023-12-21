@@ -1,4 +1,4 @@
-console.log("Hello World");
+console.log("'startGame()' to start");
 var suits = ["spades", "diamonds", "clubs", "hearts"];
 var playerValues = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 var jValues = ["J"];
@@ -14,7 +14,10 @@ var playedThisRound = new Array();
 var lostedDeck = new Array();
 var monster = new Array();
 var sumValue = 0;
-var jesterCount = 2;
+var jesterCount = 0;
+var indexOfMonster = 0;
+var gameStage = 0;
+var round = 0;
 
 function getDeck(deckvalue){
 	let deck = new Array();
@@ -85,6 +88,7 @@ function showStat(){
 	console.log(`Health: ${monster[1].Health} Power : ${monster[1].Power}`);
 	console.log(`Discard Pile : ${discardDeck.length}  Drawing Pile : ${drawDeck.length}`)
 	console.log(`Played Pile: ${playedDeck.length} Jester : ${jesterCount}`)
+	console.log(`Monster : ${indexOfMonster} ; Round : ${round}`);
 	console.log("Hands:");
 	displayHand();
 }
@@ -92,12 +96,14 @@ function showStat(){
 function startGame(){
 	getHandDeck();
 	getMonsterDeck();
-	let indexOfMonster = 1;
-	while(monsterDeck.length > 0){
+	jesterCount = 2;
+	indexOfMonster = 0;
+	while(monsterDeck.length > 0 && gameStage === 0){
+	round = 0;
 	getMonster();
-	showStat();
-	combatRound(indexOfMonster);
+	//showStat();
 	indexOfMonster++;
+	combatRound(indexOfMonster);
 	}
 	if (monster[1].Health <= 0 && monsterDeck.length === 0){
 	alert("YOU WIN");	
@@ -105,15 +111,46 @@ function startGame(){
 	
 }
 
-function combatRound(num){
-	let round = 1;
-	while (Number(monster[1].Health) > 0){
-	console.log(`Monster : ${num} ; Round : ${round}`);
-	playerRound();
-	round ++;
-		if (Number(monster[1].Health) > 0 && Number(monster[1].Power) > 0 ){
+function resumeGame(){
+	if (gameStage === 1){
+		
+		console.clear();
+		gameStage = 0;
+		//showStat();
+		round --;
+		combatRound(indexOfMonster);
+		
+	}else if (gameStage === 2 ){
+		
+		console.clear();
+		gameStage = 0;
+		//showStat();
 		monsterRound();
-		showStat();
+		combatRound(indexOfMonster);
+		}
+	while(monsterDeck.length > 0 && gameStage === 0){
+	round = 0;
+	getMonster();
+	//showStat();
+	indexOfMonster++;
+	combatRound(indexOfMonster);
+	}
+	if (monster[1].Health <= 0 && monsterDeck.length === 0){
+	alert("YOU WIN");	
+	}
+
+
+}
+
+function combatRound(num){
+	
+	while (Number(monster[1].Health) > 0  && gameStage === 0 ){
+	round++;
+	
+	playerRound();
+		if (Number(monster[1].Health) > 0 && Number(monster[1].Power ) > 0  && gameStage === 0 ){
+		//showStat();
+		monsterRound();
 		};
 	}
 	return;
@@ -134,6 +171,9 @@ function jester() {
 	}
 }
 function playerRound(){
+	gameStage = 1;
+	showStat();
+	console.log("You Attack");
 	if (handDeck.length === 0 && jesterCount === 0){
 		alert("You Lose, no handDeck and no Jester")
 	}else{
@@ -142,14 +182,17 @@ function playerRound(){
 Play your card, J : 10 ; Q : 15 ; K : 20 
 Play mutiple card by enter all their index(123)
 '*' to use Jester , 's' to sort your hand`);
-	if (playerInput === ("*")){
+	if(playerInput === null){
+	console.log("'resumeGame()' to resume");
+	}else if (playerInput === ("*")){
 	jester();
 	playerRound();
 	}else if(Number(playerInput)+1){
+	gameStage = 0;
 	play(playerInput);
 	}else if(playerInput === "s" || playerInput === "S"){
 	handDeck.sort(compare);
-	showStat();
+	//showStat();
 	playerRound();
 	}else if(playerInput !== null){
 	console.log(`Invalid Input`);
@@ -190,7 +233,7 @@ function play(card){
 	//console.log(playedCard);
 	console.log(`Played Card In This Round:`);
 	console.log(playedThisRound);
-	showStat();
+	//showStat();
 	playedThisRound = [];
 	}else{
 		console.log("Illegal Play");
@@ -344,6 +387,9 @@ function displayHand(){
  }
 
 function monsterRound(){
+	gameStage = 2;
+	showStat();
+	console.log("Monster Attack");
 	if(canPlayerSurvive()){
 	let playerInput = prompt(
 `Monster Attack!
@@ -351,19 +397,22 @@ Monster Attack:${monster[1].Power}, Discard value of card at least: ${monster[1]
 Play your card, J : 10 ; Q : 15 ; K : 20 
 Play mutiple card by enter all their index(123)
 '*' to use Jester , 's' to sort your hand`);
-	if (playerInput === ("*")){
+	if(playerInput === null){
+	console.log("'resumeGame()' to resume");
+	}else if (playerInput === ("*")){
 	jester();
 	monsterRound();
 	}else if(Number(playerInput)+1){
+		gameStage = 0;
 		monsterAttack(playerInput);
 	}else if(playerInput === "s" || playerInput === "S"){
 	handDeck.sort(compare);
-	showStat();
+	//showStat();
 	monsterRound();
 	}else if(playerInput !== null){
 	console.log(`Invalid Input`);
 	monsterRound()
-	}
+	}compare
 	}
 }
 
@@ -400,6 +449,6 @@ function monsterAttack(cards){
 	}else{
 	console.log("Not enough");
 	lostedDeck =[];
-	monsterAttack();
+	monsterRound();
 	}
 }
