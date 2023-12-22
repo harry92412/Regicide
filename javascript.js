@@ -330,7 +330,7 @@ function heartsPower(){
 function diamondsPower(){
 	
 	for( let i = sumValue ; i > 0; i-- ){
-		if(handDeck.length < 8){
+		if(handDeck.length < 8 && drawDeck.length > 0 ){
 		handDeck.push(drawDeck.shift());
 		}
 	}
