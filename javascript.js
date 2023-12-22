@@ -187,7 +187,7 @@ Play mutiple card by enter all their index(123)
 	}else if (playerInput === ("*")){
 	jester();
 	playerRound();
-	}else if(Number(playerInput)+1){
+	}else if(Number(playerInput)+1 && !playerInput.includes("8") && !playerInput.includes("9")){
 	gameStage = 0;
 	play(playerInput);
 	}else if(playerInput === "s" || playerInput === "S"){
@@ -402,7 +402,7 @@ Play mutiple card by enter all their index(123)
 	}else if (playerInput === ("*")){
 	jester();
 	monsterRound();
-	}else if(Number(playerInput)+1){
+	}else if(Number(playerInput)+1 && !playerInput.includes("8") && !playerInput.includes("9") ){
 		gameStage = 0;
 		monsterAttack(playerInput);
 	}else if(playerInput === "s" || playerInput === "S"){
