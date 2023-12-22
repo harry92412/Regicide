@@ -101,6 +101,7 @@ function getWinRank(){
 	return "Silver Victory";
 	}else if (jesterCount === 0){
 	return "Bronze Victory";
+	}
 }
 
 function startGame(){
