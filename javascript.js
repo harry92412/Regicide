@@ -1,4 +1,5 @@
-console.log("'startGame()' to start");
+	
+	console.log("'startGame()' to start");
 var suits = ["spades", "diamonds", "clubs", "hearts"];
 var playerValues = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 var jValues = ["J"];
@@ -187,7 +188,7 @@ Play mutiple card by enter all their index(123)
 	}else if (playerInput === ("*")){
 	jester();
 	playerRound();
-	}else if(Number(playerInput)+1 && !playerInput.includes("8") && !playerInput.includes("9")){
+	}else if(Number(playerInput)+1 && testInputIndex(playerInput) ){
 	gameStage = 0;
 	play(playerInput);
 	}else if(playerInput === "s" || playerInput === "S"){
@@ -198,6 +199,16 @@ Play mutiple card by enter all their index(123)
 	console.log(`Invalid Input`);
 	playerRound()
 	}
+	}
+}
+
+function testInputIndex(input){
+	for (const num in input){
+		if(Number(input[num]) > (handDeck.length -1 )){
+		return false;
+		}else {
+		return true;
+		}
 	}
 }
 
@@ -329,8 +340,9 @@ function heartsPower(){
 
 function diamondsPower(){
 	
+	
 	for( let i = sumValue ; i > 0; i-- ){
-		if(handDeck.length < 8 && drawDeck.length > 0 ){
+		if(handDeck.length < 8 && drawDeck.length > 0){
 		handDeck.push(drawDeck.shift());
 		}
 	}
@@ -402,7 +414,7 @@ Play mutiple card by enter all their index(123)
 	}else if (playerInput === ("*")){
 	jester();
 	monsterRound();
-	}else if(Number(playerInput)+1 && !playerInput.includes("8") && !playerInput.includes("9") ){
+	}else if(Number(playerInput)+1 && testInputIndex(playerInput) ){
 		gameStage = 0;
 		monsterAttack(playerInput);
 	}else if(playerInput === "s" || playerInput === "S"){
