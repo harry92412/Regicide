@@ -94,6 +94,15 @@ function showStat(){
 	displayHand();
 }
 
+function getWinRank(){
+	if (jesterCount === 2){
+	return "Gold Victory";
+	}else if (jesterCount === 1){
+	return "Silver Victory";
+	}else if (jesterCount === 0){
+	return "Bronze Victory";
+}
+
 function startGame(){
 	getHandDeck();
 	getMonsterDeck();
@@ -107,7 +116,7 @@ function startGame(){
 	combatRound(indexOfMonster);
 	}
 	if (monster[1].Health <= 0 && monsterDeck.length === 0){
-	alert("YOU WIN");	
+	alert(`YOU WIN , ${getWinRank()}`);	
 	}
 	
 }
@@ -137,7 +146,7 @@ function resumeGame(){
 	combatRound(indexOfMonster);
 	}
 	if (monster[1].Health <= 0 && monsterDeck.length === 0){
-	alert("YOU WIN");	
+	alert(`YOU WIN , ${getWinRank()}`);	
 	}
 
 
