@@ -1,5 +1,4 @@
-	
-	console.log("'startGame()' to start");
+console.log("'startGame()' to start");
 var suits = ["spades", "diamonds", "clubs", "hearts"];
 var playerValues = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 var jValues = ["J"];
@@ -96,11 +95,11 @@ function showStat(){
 
 function getWinRank(){
 	if (jesterCount === 2){
-	return "Gold Victory";
+	return `Gold Victory (Jester left:${jesterCount})`;
 	}else if (jesterCount === 1){
-	return "Silver Victory";
+	return `Silver Victory (Jester left:${jesterCount})`;
 	}else if (jesterCount === 0){
-	return "Bronze Victory";
+	return `Bronze Victory (Jester left:${jesterCount})`;
 	}
 }
 
@@ -169,11 +168,15 @@ function combatRound(num){
 
 function jester() {
 	if (jesterCount > 0){
-	for ( let i = handDeck.length ; i > 0 ; i-- ){
-		discardDeck.push(handDeck.shift());
-	}
+	//for ( let i = handDeck.length ; i > 0 ; i-- ){
+	//	discardDeck.push(handDeck.shift());
+	//}
+	discardDeck.concat(handDeck);
+	handDeck=[];
 	for ( let j = 0 ; j < 8 ; j++){
+		if(handDeck.length < 8 && drawDeck.length > 0){
 		handDeck.push(drawDeck.shift());
+		}
 	}		
 	jesterCount --;
 	console.log(`You use a Jester`);
@@ -195,6 +198,9 @@ Play mutiple card by enter all their index(123)
 '*' to use Jester , 's' to sort your hand`);
 	if(playerInput === null){
 	console.log("'resumeGame()' to resume");
+	}else if (checkDuplicate(playerInput)){
+	console.log(`Duplicate Value`);
+	playerRound()
 	}else if (playerInput === ("*")){
 	jester();
 	playerRound();
@@ -210,6 +216,17 @@ Play mutiple card by enter all their index(123)
 	playerRound()
 	}
 	}
+}
+
+function checkDuplicate(input){
+	for (let i = 0; i < input.length ;i++){
+		for (let j = 0; j < input.length ; j++){
+			if( input[i] === input [j] && i !== j){
+			return true;
+			}
+		}
+	}
+	return false;
 }
 
 function testInputIndex(input){
@@ -252,8 +269,8 @@ function play(card){
 	suitPower(sumValue);
 	//console.log(`Played Card :`);
 	//console.log(playedCard);
-	console.log(`Played Card In This Round:`);
-	console.log(playedThisRound);
+	//console.log(`Played Card In This Round:`);
+	//console.log(playedThisRound);
 	//showStat();
 	playedThisRound = [];
 	}else{
@@ -323,7 +340,7 @@ function suitPower(card){
 	}else {
 		attackMonster(Number(monster[1].Health),sumValue);
 	}
-	console.log(`allSuitPlayed:${allSuitPlayed}`)
+	console.log(`allSuitPlayed:${allSuitPlayed} sumValue :${sumValue}`)
 }
 
 function clubsPower(){
@@ -421,6 +438,9 @@ Play mutiple card by enter all their index(123)
 '*' to use Jester , 's' to sort your hand`);
 	if(playerInput === null){
 	console.log("'resumeGame()' to resume");
+	}else if (checkDuplicate(playerInput)){
+	console.log(`Duplicate Value`);
+	monsterRound();
 	}else if (playerInput === ("*")){
 	jester();
 	monsterRound();
@@ -434,7 +454,7 @@ Play mutiple card by enter all their index(123)
 	}else if(playerInput !== null){
 	console.log(`Invalid Input`);
 	monsterRound()
-	}compare
+	}
 	}
 }
 
