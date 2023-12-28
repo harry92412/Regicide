@@ -91,6 +91,7 @@ function showStat(){
 	console.log(`Monster : ${indexOfMonster} ; Round : ${round}`);
 	console.log("Hands:");
 	displayHand();
+	//console.log(`Error?: hand:${checkUndefine(handDeck)}; discardDeck:${checkUndefine(discardDeck)} ; drawDeck:${checkUndefine(drawDeck)}`);
 }
 
 function getWinRank(){
@@ -171,11 +172,13 @@ function jester() {
 	//for ( let i = handDeck.length ; i > 0 ; i-- ){
 	//	discardDeck.push(handDeck.shift());
 	//}
-	discardDeck.concat(handDeck);
+	discardDeck = discardDeck.concat(handDeck);
 	handDeck=[];
 	for ( let j = 0 ; j < 8 ; j++){
 		if(handDeck.length < 8 && drawDeck.length > 0){
-		handDeck.push(drawDeck.shift());
+		 handDeck.push(drawDeck.shift()); 
+		//handDeck.push(drawDeck[0]);
+		//drawDeck.shift();
 		}
 	}		
 	jesterCount --;
@@ -218,6 +221,10 @@ Play mutiple card by enter all their index(123)
 	}
 }
 
+function checkUndefine(arr){
+	return arr.includes(undefined);
+}
+
 function checkDuplicate(input){
 	for (let i = 0; i < input.length ;i++){
 		for (let j = 0; j < input.length ; j++){
@@ -233,10 +240,9 @@ function testInputIndex(input){
 	for (const num in input){
 		if(Number(input[num]) > (handDeck.length -1 )){
 		return false;
-		}else {
-		return true;
 		}
 	}
+	return true;
 }
 
  function compare(a, b) {          
@@ -356,10 +362,14 @@ function spadesPower(){
 }
 
 function heartsPower(){
+	if(discardDeck.length>0){
 	shuffle(discardDeck);
+	}
 	for (let i = sumValue;i > 0;i--){
 		if(discardDeck.length>0){
 		drawDeck.push(discardDeck.shift());
+		//drawDeck.push(discardDeck[0]);
+		//discardDeck.shift();
 		}
 	}
 }
@@ -371,6 +381,8 @@ function diamondsPower(){
 	for( let i = sumValue ; i > 0; i-- ){
 		if(handDeck.length < 8 && drawDeck.length > 0){
 		handDeck.push(drawDeck.shift());
+		//handDeck.push(drawDeck[0]);
+		//drawDeck.shift();
 		}
 	}
 }
